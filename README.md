@@ -1,4 +1,4 @@
-# Parse PDF files and put contents into Pandas data frame
+# Parse PDF files and put contents into Pandas dataframe
 
 ## Summary
 Sample build and invocation of Python modules, to parse PDF files, 
