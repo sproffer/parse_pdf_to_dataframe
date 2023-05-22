@@ -28,8 +28,7 @@ def processfile(afile):
     tkfuncs.write_text(text_window, "\nProcessing file "+afile + "...\n\n", True, "boldhighlight")
     try:
         pdffuncs.parsepdf(df, afile)
-        pd.options.display.max_colwidth = 100
-        tkfuncs.write_text(text_window, df.to_string(), True, "normalfont")
+        tkfuncs.write_text(text_window, df.to_string(columns={'pdf_file','header'}, max_rows=4, col_space=3), True, "normalfont")
         tkfuncs.promptforinput(text_window, 'Enter more PDF filename: ', processfile, saveexit)
     except Exception as err:
         tkfuncs.write_text(text_window, f' error parsing file {afile=}: {err=} \n', True, "italicfont")
