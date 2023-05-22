@@ -9,6 +9,7 @@
 #     brew install freetype imagemagick
 #
 from py_pdf_parser.loaders import load_file
+from py_pdf_parser.visualise import visualise
 import pandas as pd
 
 def updateHeaderRow(df, sizenum, lengthnum):
@@ -25,14 +26,16 @@ def updateHeaderRow(df, sizenum, lengthnum):
 def combined_len(row):
     return row['length'] * row['count']
 
-#  build a header mapping from font size,  h1, h2, h3 and text
-#  [font_size, type, ...]
-#  where font_size is an integer, type: h1, h2, h3, text
-#
-#  header h1, h2, h3 has to be less than headermaxlen
-#  ignore paragraph with length less than ignore len
-#  ignore text with combined length less than ignorecombinedlen
-def build_headerdata(pdfdoc, headermaxlen, ignorelen, ignorecombinedlen):
+def build_headerdata(pdfdoc, headermaxlen=200, ignorelen=5, ignorecombinedlen=20):
+    """
+    Parse document to establish header mapping (based on font size)
+        [font_size, max_length, count, combined_len, typecol]
+    :param pdfdoc:   the PDF document
+    :param headermaxlen:  max length that can be considered as header
+    :param ignorelen:     any section less than this is discoarded, to ignore such things as page numbers
+    :param ignorecombinedlen:  any section with combined length less than this, is discarded
+    :return:   dataframe font_size and typecol (with 'h1', 'h2', 'h3', 'text')
+    """
     df = pd.DataFrame(None, columns=['font_size', 'length', 'count'])
     elementlist = pdfdoc.elements;
     for anelem in elementlist:
@@ -77,15 +80,25 @@ def headermap(fs, headerdf):
     return(returntyp)
 
 def addrow(df, afile, h1, h2, h3, ctext):
-    if len(h1) > 2 and len(ctext) > 100:
+    if len(h1) > 5:
         hh = f'{h1} - {h2} - {h3}'
         df.loc[len(df.index)] = [afile, hh, ctext, f'{hh} : {ctext}' ]
 
-# add more contents to dataframe with format of
-#   DataFrame(None, columns=['pdf_file', 'header', 'content', 'combined'])
-def parsepdf(df, pdffile):
+
+def parsepdf(df, pdffile, viewpdf=False):
+    """
+    parse a PDF file and add contents to the dataframe
+    :param df:     existing dataframe, could already have data
+    :param pdffile:   pdffile name
+    :param viewpdf:   whether to launch a PDF visualize, default is False.
+    :return:    updated dataframe with this PDF file:  DataFrame(None, columns=['pdf_file', 'header', 'content', 'combined'])
+    """
     pdfdoc = load_file(pdffile)
-    headerdf = build_headerdata(pdfdoc, 200, 10, 150)
+    if viewpdf == True:
+        ## has problem of exiting and continue
+        visualise(pdfdoc)
+
+    headerdf = build_headerdata(pdfdoc)
     #write(headerdf.to_string())
     h1 = ''
     h2 = ''
@@ -117,13 +130,3 @@ def parsepdf(df, pdffile):
     addrow(df, pdffile, h1, h2, h3, concattext)
     return(df)
 
-def validpdffile(afile):
-    try:
-        if afile.lower() == 'stop':
-            return True
-
-        temppdfdoc = load_file(afile)
-        return True
-    except Exception as ex:
-        tkfuncs.write_text(text_window, f'    error loading file {afile=} : {ex=}\n')
-        return False

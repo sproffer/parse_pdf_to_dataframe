@@ -2,7 +2,9 @@
 
 ## Summary
 Sample build and invocation of Python modules, to parse PDF files, 
-extract headers and contents, and put them to Padndas dataframe.  
+extract headers and contents, and put them to Padndas dataframe, 
+and output to a CSV file. 
+
 To be incorporated into AI processing with consumed PDF contents.
 
 #### Dataframe format: 
@@ -29,5 +31,9 @@ To be incorporated into AI processing with consumed PDF contents.
 *****dynamically imported packages are not imported during build, explicitly include them*****
 
 ##  Run the app, with launched Tkinter text console
-    ./dist/pdf-to-dataframe.app
+    pdf-to-dataframe.app
+
+*****<a href=https://youtu.be/ba7tWWsO7bA target=yt>Screen capture of a sample run</a>*****
+
+2 sample PDF files included.
 

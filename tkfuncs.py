@@ -112,12 +112,16 @@ def promptforinput(text_window, prompttxt, inputprocessor, exitprocessor=sys.exi
     inputmark = text_window.index(tk.INSERT)
     text_window.bind('<Return>', lambda event: processinput(event, inputprocessor, exitprocessor))
 
-def delayexit(waitsec=5):
-    c = 0
-    while c< waitsec:
-        c += 1
-        write_text(text_window, f'   waited {c} seconds', False, 'italicfont')
-        time.sleep(0.5)
+def delayexit(waitsecs=6):
+    """
+    Exit program, with count down
+    :param waitsecs:  the number of seconds to count down
+    """
+    c = waitsecs
+    while c > 0:
+        write_text(text_window, f'   counting down {c} seconds', False, 'italicfont')
+        c = c - 1
+        time.sleep(1)
     write_text(text_window, ' Gone !', True, 'boldfont')
     time.sleep(1)
     sys.exit()

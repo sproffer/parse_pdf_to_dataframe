@@ -8,7 +8,7 @@ Usage:
 from setuptools import setup
 
 APP = ['pdf-to-dataframe.py']
-DATA_FILES = []
+DATA_FILES = ['sample1.pdf','sample2.pdf']
 OPTIONS = {}
 
 setup(

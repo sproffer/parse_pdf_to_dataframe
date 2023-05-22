@@ -8,7 +8,6 @@
 #     brew install python-tk@3.9
 #     brew install freetype imagemagick
 #
-from py_pdf_parser.loaders import load_file
 import pandas as pd
 import sys, time, random, os
 import tkfuncs, pdffuncs
@@ -38,7 +37,7 @@ def saveexit():
     global df
     tkfuncs.write_text(text_window, 'graceful exit, write to file ' + os.getcwdb().decode('utf-8') + '/outdata.csv....\n\n', True, 'italicfont')
     df.to_csv('outdata.csv', sep="\t")
-    tkfuncs.delayexit(10)
+    tkfuncs.delayexit()
 
 # main
 tkfuncs.promptforinput(text_window, 'Enter PDF file name: ', processfile, saveexit)
