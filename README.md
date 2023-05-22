@@ -5,7 +5,7 @@ Sample build and invocation of Python modules, to parse PDF files,
 extract headers and contents, and put them to Padndas dataframe, 
 and output to a CSV file. 
 
-To be incorporated into AI processing with consumed PDF contents.
+To be incorporated into LLM processing with consumed PDF contents.
 
 #### Dataframe format: 
      df = pd.DataFrame(None, columns=['pdf_file', 'header', 'content', 'combined'])
